@@ -1,7 +1,7 @@
 # app.yaml
 runtime: custom
 env: flex
-service: vuejs
+service: default
 automatic_scaling:
   min_num_instances: 1
   max_num_instances: 2
