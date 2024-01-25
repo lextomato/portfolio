@@ -7,10 +7,11 @@ RUN npm install
 # To ignore files like node_modules, dist, use .dockerignore file
 COPY . .
 RUN npm run build
+RUN mkdir -p /app/dist/assets/logos
+RUN cp -R /app/src/assets/logos/* /app/dist/assets/logos/
 # production stage
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-COPY --from=build-stage /app/src/assets/ /usr/share/nginx/html/logos/assets
 # Alter Nginx to receive traffic on 8080 instead. Refer below explaination
 # App Engine only support port 8080
 COPY --from=build-stage /app/deployment/default.conf /etc/nginx/conf.d/default.conf
