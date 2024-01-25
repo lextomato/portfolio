@@ -9,11 +9,6 @@ import { createHead } from '@unhead/vue'
 
 import Vue3Lottie from 'vue3-lottie'
 
-import '@material/web/button/elevated-button.js';
-import '@material/web/button/filled-button.js';
-import '@material/web/button/outlined-button.js';
-import '@material/web/checkbox/checkbox.js';
-
 import { createI18n } from 'vue-i18n'
 import esJSON from '../es.json'
 import enJSON from '../en.json'
