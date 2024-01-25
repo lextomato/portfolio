@@ -103,14 +103,14 @@ const message = ref(null)
                   <div class="row p-0 m-0">
                     <div class="col-6">
                       <button id="btn-front" @click="store.frontend()" class="btn btn-outline-success w-100 mx-1 border-2 rounded-4">
-                        <img src="@/assets/logos/sable-front.png" width="35" height="35" alt="Logo">
+                        <img src="@/assets/logos/sable_front.png" width="35" height="35" alt="Logo">
                         <span class="fw-semibold fs-min">Frontend</span>
                       </button>
                       <label class="text-muted fs-min fst-italic" for="btn-front">~The Light Side~</label>
                     </div>
                     <div class="col-6">
                       <button id="btn-back" @click="store.backend()" :class="store.isFrontend? 'btn-outline-dark':'btn-outline-secondary'" class="btn w-100 mx-1 fw-semibold border-2 rounded-4">
-                        <img src="@/assets/logos/sable-back.png" width="35" height="35" alt="Logo">
+                        <img src="@/assets/logos/sable_back.png" width="35" height="35" alt="Logo">
                         <span class="fw-semibold fs-min">Backend</span>
                       </button>
                       <label class="text-muted fs-min fst-italic" for="btn-back">~The Dark Side~</label>
@@ -223,7 +223,7 @@ const message = ref(null)
                       <GlitchImg src="@/assets/logos/linkedin.png" set-class="imgWrap-35" size="35" />
                     </a>
                     <a href="https://github.com/lextomato" target="_blank" class="btn mx-2 rounded-3">
-                      <GlitchImg :src="store.isFrontend? '@/assets/logos/github.svg':'@/assets/logos/github-white.svg'" set-class="imgWrap-35" size="35" />
+                      <GlitchImg :src="store.isFrontend? '@/assets/logos/github.svg':'@/assets/logos/github_white.svg'" set-class="imgWrap-35" size="35" />
                     </a>
                     <a href="https://platzi.com/p/lextomato/" target="_blank" class="btn mx-2 rounded-3">
                       <GlitchImg src="@/assets/logos/platzi.png" set-class="imgWrap-35" size="40" />

@@ -1,0 +1,13 @@
+//cloud-build.yaml
+steps:
+#Create .env file from Google Cloud Build substitution variables
+- name: node
+  entrypoint: npm
+  args: ["run", "create-env"]
+  env:
+    - 'VITE_SEND_MAIL_URL=${_VITE_SEND_MAIL_URL}'
+    - 'VITE_TOKEN_CLOUD_FUNCTION=${_VITE_TOKEN_CLOUD_FUNCTION}'
+#The .env file is prepared and ready to deploy to Google App Engine
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+timeout: "1600s"

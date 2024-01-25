@@ -32,7 +32,8 @@ export const useStore = defineStore('store', () => {
   }
 
   const getDir = (src: string) => {
-    return new URL(src, import.meta.url).href
+    const img = new URL(src, import.meta.url)
+    return img.href;
   }
 
   let isChanging = ref(false)

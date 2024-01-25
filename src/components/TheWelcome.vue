@@ -35,7 +35,7 @@ const store = useStore()
       </div>
       <div class="mx-1">
         <img v-if="store.isFrontend" src="@/assets/logos/flask.svg" class="imgWrap-min" />
-        <img v-else src="@/assets/logos/flask-white.svg" class="imgWrap-min" />
+        <img v-else src="@/assets/logos/flask_white.svg" class="imgWrap-min" />
       </div>
       <div class="mx-1">
         <img src="@/assets/logos/fastapi.svg" class="imgWrap-min" />
@@ -51,7 +51,7 @@ const store = useStore()
       </div>
       <div class="mx-1">
         <img v-if="store.isFrontend" src="@/assets/logos/aws.svg" class="imgWrap-min" />
-        <img v-else src="@/assets/logos/aws-white.svg" class="imgWrap-min" />
+        <img v-else src="@/assets/logos/aws_white.svg" class="imgWrap-min" />
       </div>
       <div class="mx-1">
         <img src="@/assets/logos/docker.svg" class="imgWrap-min" />
@@ -84,7 +84,7 @@ const store = useStore()
       </div>
       <div class="mx-1">
         <img v-if="store.isFrontend" src="@/assets/logos/flask.svg" class="imgWrap-min" />
-        <img v-else src="@/assets/logos/flask-white.svg" class="imgWrap-min" />
+        <img v-else src="@/assets/logos/flask_white.svg" class="imgWrap-min" />
       </div>
       <div class="mx-1">
         <img src="@/assets/logos/mysql.svg" class="imgWrap-min" />
@@ -123,7 +123,7 @@ const store = useStore()
       </div>
       <div class="mx-1">
         <img v-if="store.isFrontend" src="@/assets/logos/flask.svg" class="imgWrap-min" />
-        <img v-else src="@/assets/logos/flask-white.svg" class="imgWrap-min" />
+        <img v-else src="@/assets/logos/flask_white.svg" class="imgWrap-min" />
       </div>
       <div class="mx-1">
         <img src="@/assets/logos/mysql.svg" class="imgWrap-min" />
@@ -139,7 +139,7 @@ const store = useStore()
       </div>
       <div class="mx-1">
         <img v-if="store.isFrontend" src="@/assets/logos/pandas.svg" class="imgWrap-min" />
-        <img v-else src="@/assets/logos/pandas-white.svg" class="imgWrap-min" />
+        <img v-else src="@/assets/logos/pandas_white.svg" class="imgWrap-min" />
       </div>
       <div class="mx-1">
         <img src="@/assets/logos/numpy.svg" class="imgWrap-min" />
@@ -172,7 +172,7 @@ const store = useStore()
       </div>
       <div class="mx-1">
         <img v-if="store.isFrontend" src="@/assets/logos/flask.svg" class="imgWrap-min" />
-        <img v-else src="@/assets/logos/flask-white.svg" class="imgWrap-min" />
+        <img v-else src="@/assets/logos/flask_white.svg" class="imgWrap-min" />
       </div>
       <div class="mx-1">
         <img src="@/assets/logos/postgresql.svg" class="imgWrap-min" />
