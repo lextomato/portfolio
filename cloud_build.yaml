@@ -8,6 +8,7 @@ steps:
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
 
-logsBucket: 'nombre-de-tu-bucket'
+options:
+  logging: CLOUD_LOGGING_ONLY
 
 timeout: "1600s"
