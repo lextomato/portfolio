@@ -1,247 +1,85 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { useStore } from './stores/store';
-import GlitchImg from '@/components/GlitchImg.vue'
-import {ref} from 'vue';
-import { Vue3Lottie } from 'vue3-lottie'
-import axios from 'axios'
-import mailJSON from '@/assets/animations/mail.json'
-import sendJSON from '@/assets/animations/send.json'
-import {
-  useFloating,
-  arrow,
-  offset,
-  shift
-} from '@floating-ui/vue';
+import Menu from '@/components/Menu.vue'
+import {onMounted, onUnmounted} from 'vue';
+import { useScript } from '@unhead/vue';
+
+declare global {
+  interface Window {
+    gtag: any;
+  }
+}
+
+const { gtag } = useScript({
+  src: 'https://www.googletagmanager.com/gtag/js?id=TU_ID_DE_ANALYTICS',
+}, {
+  use: () => ({ gtag: window.gtag })
+});
+
+// Configurar Google Analytics
+gtag('js', new Date());
+gtag('config', 'TU_ID_DE_ANALYTICS');
 
 const store = useStore()
 
-const reference = ref(null);
-const floating = ref(null);
-const floatingArrow = ref(null);
-
-const isSend = ref(false); 
-let popOpen = ref(false);
-
-const {floatingStyles, middlewareData} = useFloating(reference, floating, {
-  placement: 'top-end',
-  open: popOpen.value,
-  middleware: [offset(20), shift({ padding: 5 }), arrow({element: floatingArrow})]
+onMounted(() => {
+  store.checkSize();
+  window.addEventListener('resize', store.checkSize);
 });
-function togglePopover() {
-  popOpen.value = popOpen.value? false:true;
-}
-function closePopover() {
-  popOpen.value = false;
-}
-function sendMail() {
-  const url = import.meta.env.VITE_SEND_MAIL_URL;
-  const token = import.meta.env.VITE_TOKEN_CLOUD_FUNCTION;
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  };
-  const payload = {
-    name: name.value,
-    email: email.value,
-    message: message.value
-  }
-  axios.post(url, payload, { headers })
-    .then((res: any) => {
-      if (res.result) {
-        isSend.value = true;
-      } else {
-        console.log(res)
-      }
-    })
-    .catch((err) => {
-      console.error('Error al enviar el correo:', err);
-      alert('Error al enviar el correo');
-    });
-}
 
-const lottieRef = ref(null);
-
-const name = ref(null)
-const email = ref(null)
-const message = ref(null)
+onUnmounted(() => {
+  window.removeEventListener('resize', store.checkSize);
+});
 </script>
 
 <template>
   <svg class="filter">
-      <filter id="alphaRed">
-        <feColorMatrix mode="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="joint" />
-      </filter>
-      <filter id="alphaGreen">
-        <feColorMatrix mode="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="joint" />
-      </filter>
-      <filter id="alphaBlue">
-        <feColorMatrix mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="joint" />
-      </filter>
-      <filter id="alpha">
-        <feColorMatrix type="saturate" values="0"/>
-      </filter>
-    </svg>
+    <filter id="alphaRed">
+      <feColorMatrix mode="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="joint" />
+    </filter>
+    <filter id="alphaGreen">
+      <feColorMatrix mode="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="joint" />
+    </filter>
+    <filter id="alphaBlue">
+      <feColorMatrix mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="joint" />
+    </filter>
+    <filter id="alpha">
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </svg>
+
+  <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="staticBackdropLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <Menu class="position-sticky py-3 text-center d-flex flex-column align-items-center" style="height: 100%;" />
+    </div>
+  </div>
 
   <div class="container-fluid">
       <div class="row">
           <!-- Navbar Vertical -->
-          <nav id="sidebar" class="sticky-top col-md-3 col-lg-3 d-md-block sidebar shadow-sm height-100vh">
-            <div class="position-sticky py-3 text-center d-flex flex-column align-items-center" style="height: 100%;">
-                <a class="navbar-brand" href="#">
-                  <div v-if="store.isChanging" class="imgWrap">
-                    <img class="img-thumbnail red rounded-3" alt="logo" src="@/assets/profile.png">
-                    <img class="img-thumbnail green rounded-3" alt="logo" src="@/assets/profile.png">
-                    <img class="img-thumbnail blue rounded-3" alt="logo" src="@/assets/profile.png">
-                  </div>
-                  <img v-else src="@/assets/profile.png" width="130" height="130" class="img-thumbnail rounded-5" alt="Logo">
-                </a>
-                <h5 :class="store.isChanging? 'glitch-text':''" class="fw-semibold">Jhojany Uzcátegui</h5>
-                <p :class="store.isChanging? 'glitch-text':''" class="fst-italic text-muted fs-min">~ {{ $t('pitch') }} ~</p>
-                
-                <div class="text-center w-100">
-                  <div class="row p-0 m-0">
-                    <div class="col-6">
-                      <button id="btn-front" @click="store.frontend()" class="btn btn-outline-success w-100 mx-1 border-2 rounded-4">
-                        <img src="@/assets/logos/sable_front.png" width="35" height="35" alt="Logo">
-                        <span class="fw-semibold fs-min">Frontend</span>
-                      </button>
-                      <label class="text-muted fs-min fst-italic" for="btn-front">~The Light Side~</label>
-                    </div>
-                    <div class="col-6">
-                      <button id="btn-back" @click="store.backend()" :class="store.isFrontend? 'btn-outline-dark':'btn-outline-secondary'" class="btn w-100 mx-1 fw-semibold border-2 rounded-4">
-                        <img src="@/assets/logos/sable_back.png" width="35" height="35" alt="Logo">
-                        <span class="fw-semibold fs-min">Backend</span>
-                      </button>
-                      <label class="text-muted fs-min fst-italic" for="btn-back">~The Dark Side~</label>
-                    </div>
-                  </div>
-                </div>
-
-                <ul :class="store.isChanging? 'glitch-text':''" class="nav flex-column mt-3 fs-min">
-                  <li class="nav-item">
-                    <RouterLink class="nav-link" to="/about-me">{{ $t('to-about-me') }}</RouterLink>
-                  </li>
-                  <li class="nav-item">
-                    <RouterLink class="nav-link" to="/me">{{ $t('to-experience') }}</RouterLink>
-                  </li>
-                  <li class="nav-item">
-                    <RouterLink class="nav-link" to="/tecnologies">{{ $t('to-tecnologies') }}</RouterLink>
-                  </li>
-                  <li class="nav-item">
-                    <!-- <RouterLink class="nav-link" to="/me">Salúdame</RouterLink> -->
-                    <a href="https://github.com/lextomato?tab=repositories" target="_blank" class="nav-link">{{ $t('to-portfolio') }}</a>
-                  </li>
-                </ul>
-
-                <!-- Botones de redes sociales -->
-                <div class="social-buttons mt-auto">
-                  <a @click="togglePopover" ref="reference" :class="store.isChanging? 'glitch-text':''" class="btn rounded-4 border-link mb-2 fs-6 pt-0">{{ $t('hello-me') }} <span class="fs-4" style="position: relative; top: 2px;">✌️</span></a>
-                  <Transition name="fade" :duration="200">
-                    <div 
-                      ref="floating" 
-                      id="floating"
-                      v-if="popOpen"
-                      class="ms-5 p-4 rounded-4"
-                      :class="store.isFrontend? 'bg-light':'bg-dark'"
-                      style="width: 50rem; z-index: 1500;" 
-                      :style="floatingStyles"
-                    >
-                      <div class="row">
-                        <div class="col-8">
-                          <form>
-                            <div class="row mb-3">
-                              <label for="inputEmail1" class="col-sm-2 col-form-label"><span class="text-success fw-semibold">{{ $t('t-na') }}</span><strong>{{ $t('t-me') }}</strong></label>
-                              <div class="col-sm">
-                                <input v-model="name" type="text" class="border border-1 p-1 rounded-3 w-100" id="inputEmail1">
-                              </div>
-                            </div>
-                            <div class="row mb-3">
-                              <label for="inputEmail2" class="col-sm-2 col-form-label"><span class="text-success fw-semibold">E</span><strong>mail</strong></label>
-                              <div class="col-sm">
-                                <input v-model="email" type="email" class="border border-1 p-1 rounded-3 w-100" id="inputEmail2">
-                              </div>
-                            </div>
-                            <div class="row mb-3">
-                              <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="text-success fw-semibold">{{ $t('t-mes') }}</span><strong>{{ $t('t-sage') }}</strong></label>
-                              <div class="col-sm-10">
-                                <textarea v-model="message" rows="3" class="border border-1 p-1 rounded-3 w-100" id="inputEmail3"></textarea>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                        <div class="col-4 d-flex flex-column align-items-center">
-                          <div class="pb-2">
-                            <span :class="store.isFrontend? 'bg-white text-muted':''" class="border border-3 p-1 px-2 rounded-3">hi@mollitiam.cl</span>
-                          </div>
-                          <div>
-                            <Transition name="fade">
-                              <Vue3Lottie
-                              :hidden="!isSend? true:false"
-                              ref="lottieRef"
-                              :loop="false"
-                              style="width: 10rem"
-                              :animation-data="sendJSON"
-                              />
-                            </Transition>
-                            <Transition name="fade">
-                              <Vue3Lottie
-                                :hidden="!isSend? false:true"
-                                ref="lottieRef"
-                                style="width: 10rem"
-                                :animation-data="mailJSON"
-                              />
-                            </Transition>
-                          </div>
-                          <div class="mt-auto">
-                            <a @click="sendMail" class="btn rounded-4 border-link mb-2 mx-2">{{ $t('t-send') }}</a>
-                            <a @click="closePopover" class="btn rounded-4 border border-2 mb-2 mx-2">{{ $t('t-cancel') }}</a>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div
-                        id="arrow"
-                        ref="floatingArrow"
-                        :class="store.isFrontend? 'bg-light':'bg-dark'"
-                        :style="{
-                          position: 'absolute',
-                          left:
-                            middlewareData.arrow?.x != null
-                              ? `${middlewareData.arrow.x}px`
-                              : '',
-                          top:
-                            middlewareData.arrow?.y != null
-                              ? `${middlewareData.arrow.y}px`
-                              : '',
-                        }"
-                      ></div>
-                    </div>
-                  </Transition>
-                  <div>
-                    <a href="https://www.linkedin.com/in/jhojanyuzcategui/" target="_blank" class="btn mx-2 rounded-3">
-                      <GlitchImg src="@/assets/logos/linkedin.png" set-class="imgWrap-35" size="35" />
-                    </a>
-                    <a href="https://github.com/lextomato" target="_blank" class="btn mx-2 rounded-3">
-                      <GlitchImg :src="store.isFrontend? '@/assets/logos/github.svg':'@/assets/logos/github_white.svg'" set-class="imgWrap-35" size="35" />
-                    </a>
-                    <a href="https://platzi.com/p/lextomato/" target="_blank" class="btn mx-2 rounded-3">
-                      <GlitchImg src="@/assets/logos/platzi.png" set-class="imgWrap-35" size="40" />
-                    </a>
-                  </div>
-                </div>
-              </div>
+          <nav v-if="store.isMd" id="sidebar" class="sticky-top col-md-3 col-lg-3 d-md-block sidebar shadow-sm height-100vh">
+            <Menu class="position-sticky py-3 text-center d-flex flex-column align-items-center" style="height: 100%;" />
           </nav>
 
           <!-- Contenido principal -->
-          <main class="col-md-9 ms-sm-auto col-lg-9 px-md-4 min-height-100vh">
-            <nav class="d-flex w-100 pt-2">
+          <main class="col-md-9 ms-sm-auto col-lg-9 px-md-4 main-container">
+            <nav :class="{'bg-transparent': store.isChanging, 'bg-white': store.isFrontend, 'bg-dark': !store.isFrontend}" class="sticky-top d-flex w-100 py-2 nav-container">
+              <a v-if="!store.isMd" @click="$i18n.locale='en'" class="btn border-link rounded-3 m-0 fs-min" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">Menu</a>  
               <a v-if="$i18n.locale === 'es'" @click="$i18n.locale='en'" class="btn border-link rounded-3 m-0 fs-min ms-auto">English</a>  
               <a v-else @click="$i18n.locale='es'" class="btn border-link rounded-3 m-0 fs-min ms-auto">Español</a>  
             </nav>
-            <Transition name="fade" mode="out-in">
-              <RouterView />
-            </Transition>
+            <div class="container-fluid py-3 content-container">    
+              <div class="row align-items-center h-100">
+                <Transition name="fade" mode="out-in">
+                  <RouterView />
+                </Transition>
+              </div>
+            </div>
           </main>
       </div>
   </div>
@@ -250,6 +88,21 @@ const message = ref(null)
 <style>
 body {
   font-family: 'Montserrat', sans-serif !important;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Asegura que el contenedor principal tenga la altura de la ventana */
+}
+
+.nav-container {
+  flex-shrink: 0; /* Evita que el nav se encoge */
+}
+
+.content-container {
+  flex-grow: 1; /* Permite que el content-container crezca para ocupar el espacio restante */
+  overflow-y: auto; /* Añade scroll si el contenido es muy largo */
 }
 
 .min-height-100vh {

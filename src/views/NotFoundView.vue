@@ -2,26 +2,30 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Vue3Lottie } from 'vue3-lottie';
 import notFoundJSON from '@/assets/animations/404.json';
+import { useHead } from '@unhead/vue';
+
+useHead({
+  title: '404 Not Found - Mollitiam.cl',
+  meta: [
+    {
+      name: 'description',
+      content: 'Página no encontrada. Lo sentimos, pero la página que estás buscando no existe o ha sido movida. Por favor, revisa la URL o regresa a la página de inicio de Mollitiam.cl.',
+    }
+  ]
+})
 
 const lottieRef = ref(null);
 const maxWidthStyle = ref('100%')
 
-// Función para manejar el cambio de tamaño de la ventana
 const handleResize = () => {
-  // Obtener el ancho y alto disponibles en la pantalla
   const availableWidth = window.innerWidth;
   const availableHeight = window.innerHeight - window.innerHeight*0.12;
-
-  // Calcular el ancho máximo permitido basado en el alto disponible
   const maxWidth = availableHeight;
-
-  // Establecer el tamaño de la animación
   maxWidthStyle.value = `${maxWidth}px`;
 };
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
-  // Llamar a la función una vez al inicio para establecer el tamaño inicial
   handleResize();
 });
 
@@ -31,7 +35,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="container-fluid text-center">
+  <div class="text-center">
     <RouterLink class="nav-link text-decoration-underline" to="/about-me">Go to Home</RouterLink>
     <Vue3Lottie
       ref="lottieRef"

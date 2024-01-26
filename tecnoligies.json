@@ -1,11 +1,11 @@
 {
     "frontend": [
-        {"src": "@/assets/logo.svg", "name": "Vue.js"},
+        {"src": "@/assets/logos/logo.svg", "name": "Vue.js"},
         {"src": "@/assets/logos/quasar.svg", "name": "Quasar"},
         {"src": "@/assets/logos/bootstrap.png", "name": "Bootstrap"},
         {"src": "@/assets/logos/html.svg", "name": "HTML 5"},
         {"src": "@/assets/logos/css.svg", "name": "CSS 3"},
-        {"src": "@/assets/logos/typeScript.svg", "name": "TypeScript"},
+        {"src": "@/assets/logos/typescript.svg", "name": "TypeScript"},
         {"src": "@/assets/logos/js.svg", "name": "JavaScript"},
         {"src": "@/assets/logos/jquery.svg", "name": "JQuery"},
         {"src": "@/assets/logos/git.svg", "name": "Git"},
@@ -14,7 +14,7 @@
         {"src": "@/assets/logos/terminal.svg", "name": "Terminal"}
     ],
     "backend": [
-        {"src": "@/assets/logos/typeScript.svg", "name": "TypeScript"},
+        {"src": "@/assets/logos/typescript.svg", "name": "TypeScript"},
         {"src": "@/assets/logos/python.svg", "name": "Python"},
         {"src": "@/assets/logos/fastapi.svg", "name": "FastAPI"},
         {"src": "@/assets/logos/flask_white.svg", "name": "Flask"},

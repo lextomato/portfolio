@@ -50,5 +50,11 @@ export const useStore = defineStore('store', () => {
   const soundFront = new Audio(lightSaberSound);
   soundFront.volume = 0.1
 
-  return { tecnoligiesFront, tecnoligiesBack, isFrontend, isChanging, soundBack, soundFront, backend, frontend, getDir, changing }
+  const isMd = ref(false);
+
+  const checkSize = () => {
+    isMd.value = window.innerWidth >= 768;
+  };
+
+  return { isMd, tecnoligiesFront, tecnoligiesBack, isFrontend, isChanging, soundBack, soundFront, checkSize, backend, frontend, getDir, changing }
 })
