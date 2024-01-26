@@ -123,29 +123,29 @@ const message = ref(null)
                 ref="floating" 
                 id="floating"
                 v-if="popOpen"
-                class="p-4 rounded-4"
-                :class="[store.isFrontend? 'bg-light':'bg-dark', store.isMd? 'popoverMd ms-5':'']"
+                class="rounded-4"
+                :class="[store.isFrontend? 'bg-light':'bg-dark', store.isMd? 'popoverMd ms-5 p-4':'p-2']"
                 :style="floatingStyles"
             >
                 <div class="row">
                 <div class="col-md-8 col-12">
                     <form>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <label for="inputEmail1" class="col-sm-2 col-form-label"><span class="text-success fw-semibold">{{ $t('t-na') }}</span><strong>{{ $t('t-me') }}</strong></label>
                         <div class="col-sm">
                         <input v-model="name" type="text" class="border border-1 p-1 rounded-3 w-100" id="inputEmail1">
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <label for="inputEmail2" class="col-sm-2 col-form-label"><span class="text-success fw-semibold">E</span><strong>mail</strong></label>
                         <div class="col-sm">
                         <input v-model="email" type="email" class="border border-1 p-1 rounded-3 w-100" id="inputEmail2">
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <label for="inputEmail3" class="col-sm-2 col-form-label"><span class="text-success fw-semibold">{{ $t('t-mes') }}</span><strong>{{ $t('t-sage') }}</strong></label>
                         <div class="col-sm-10">
-                        <textarea v-model="message" rows="3" class="border border-1 p-1 rounded-3 w-100" id="inputEmail3"></textarea>
+                        <textarea v-model="message" :rows="store.isMd? 3:2" class="border border-1 p-1 rounded-3 w-100" id="inputEmail3"></textarea>
                         </div>
                     </div>
                     </form>
@@ -160,7 +160,7 @@ const message = ref(null)
                         :hidden="!isSend? true:false"
                         ref="lottieRef"
                         :loop="false"
-                        style="width: 10rem"
+                        :style="store.isMd? 'width: 10rem;':'width: 7rem'"
                         :animation-data="sendJSON"
                         />
                     </Transition>
@@ -168,7 +168,7 @@ const message = ref(null)
                         <Vue3Lottie
                         :hidden="!isSend? false:true"
                         ref="lottieRef"
-                        style="width: 10rem"
+                        :style="store.isMd? 'width: 10rem;':'width: 7rem'"
                         :animation-data="mailJSON"
                         />
                     </Transition>

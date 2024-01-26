@@ -50,11 +50,10 @@ onUnmounted(() => {
   </svg>
 
   <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="staticBackdropLabel">Menu</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
     <div class="offcanvas-body">
+      <div class="d-flex w-100">
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
       <Menu class="position-sticky py-3 text-center d-flex flex-column align-items-center" style="height: 100%;" />
     </div>
   </div>
