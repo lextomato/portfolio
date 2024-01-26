@@ -12,14 +12,14 @@ declare global {
 }
 
 const { gtag } = useScript({
-  src: 'https://www.googletagmanager.com/gtag/js?id=TU_ID_DE_ANALYTICS',
+  src: 'https://www.googletagmanager.com/gtag/js?id=G-L5WLLLYLDB',
 }, {
   use: () => ({ gtag: window.gtag })
 });
 
 // Configurar Google Analytics
 gtag('js', new Date());
-gtag('config', 'TU_ID_DE_ANALYTICS');
+gtag('config', 'G-L5WLLLYLDB');
 
 const store = useStore()
 
