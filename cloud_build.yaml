@@ -1,17 +1,7 @@
 steps:
-- name: 'node'
-  entrypoint: 'npm'
-  args: ['install']
-- name: 'node'
-  entrypoint: 'npm'
-  args: ['run', 'build']
-- name: 'gcr.io/cloud-builders/gsutil'
-  args: ['mkdir', '-p', 'dist/assets/logos']
-- name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', '-r', 'src/assets/logos', 'dist/assets/logos']
-- name: 'node'
-  entrypoint: 'npm'
-  args: ['run', 'create-env']
+- name: node
+  entrypoint: npm
+  args: ["run", "create-env"]
   env:
     - 'VITE_SEND_MAIL_URL=${_VITE_SEND_MAIL_URL}'
     - 'VITE_TOKEN_CLOUD_FUNCTION=${_VITE_TOKEN_CLOUD_FUNCTION}'

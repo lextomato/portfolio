@@ -1,20 +1,29 @@
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
+
+# Argumentos de construcción
+ARG VITE_SEND_MAIL_URL
+ARG VITE_TOKEN_CLOUD_FUNCTION
+
+# Establecer las variables de entorno para el proceso de construcción
+ENV VITE_SEND_MAIL_URL=https://southamerica-west1-
+ENV VITE_TOKEN_CLOUD_FUNCTION=jhsjhdjasj
+
 COPY package*.json ./
 RUN npm install
-# Copy all project files to this container and build
-# To ignore files like node_modules, dist, use .dockerignore file
+
 COPY . .
 RUN npm run build
+
 RUN mkdir -p /app/dist/assets/logos
 RUN cp -R /app/src/assets/logos/* /app/dist/assets/logos/
+
 # production stage
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-# Alter Nginx to receive traffic on 8080 instead. Refer below explaination
-# App Engine only support port 8080
+
 COPY --from=build-stage /app/deployment/default.conf /etc/nginx/conf.d/default.conf
-# Expose container port 8080
+
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
