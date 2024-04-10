@@ -2,14 +2,6 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 
-# Argumentos de construcción
-ARG VITE_SEND_MAIL_URL
-ARG VITE_TOKEN_CLOUD_FUNCTION
-
-# Establecer las variables de entorno para el proceso de construcción
-ENV VITE_SEND_MAIL_URL=https://southamerica-west1-
-ENV VITE_TOKEN_CLOUD_FUNCTION=jhsjhdjasj
-
 COPY package*.json ./
 RUN npm install
 

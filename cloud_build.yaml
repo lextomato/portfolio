@@ -5,8 +5,13 @@ steps:
   env:
     - 'VITE_SEND_MAIL_URL=${_VITE_SEND_MAIL_URL}'
     - 'VITE_TOKEN_CLOUD_FUNCTION=${_VITE_TOKEN_CLOUD_FUNCTION}'
-- name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy"]
+- name: 'gcr.io/cloud-builders/docker'
+  script: |
+    docker build -t us-west2-docker.pkg.dev/$PROJECT_ID/quickstart-docker-repo/quickstart-image:tag1 .
+  automapSubstitutions: true
+
+images:
+- 'us-west2-docker.pkg.dev/$PROJECT_ID/quickstart-docker-repo/quickstart-image:tag1'
 
 options:
   logging: CLOUD_LOGGING_ONLY
