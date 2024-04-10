@@ -5,6 +5,17 @@ steps:
 - name: 'node'
   entrypoint: 'npm'
   args: ['run', 'build']
+- name: 'ubuntu'
+  entrypoint: '/bin/bash'
+  args:
+    - '-c'
+    - 'mkdir -p dist/assets/logos'
+  # Copiar los assets a la ubicación deseada antes de construir la imagen Docker
+- name: 'ubuntu'
+  entrypoint: '/bin/bash'
+  args:
+    - '-c'
+    - 'cp -r src/assets/logos/* dist/assets/logos/'
 - name: 'node'
   entrypoint: 'npm'
   args: ['run', 'create-env']
