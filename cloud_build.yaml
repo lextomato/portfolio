@@ -5,8 +5,11 @@ steps:
   env:
     - 'VITE_SEND_MAIL_URL=${_VITE_SEND_MAIL_URL}'
     - 'VITE_TOKEN_CLOUD_FUNCTION=${_VITE_TOKEN_CLOUD_FUNCTION}'
+- name: node  # Añadir un paso para ejecutar pruebas
+  entrypoint: npm
+  args: ["test"]
 - name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy"]
+  args: ["app", "deploy", "app.yaml"]  # Especificar un archivo de configuración si es necesario
 
 options:
   logging: CLOUD_LOGGING_ONLY
