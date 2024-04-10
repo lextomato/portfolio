@@ -1,7 +1,13 @@
 steps:
-- name: node
-  entrypoint: npm
-  args: ["run", "create-env"]
+- name: 'node'
+  entrypoint: 'npm'
+  args: ['install']
+- name: 'node'
+  entrypoint: 'npm'
+  args: ['run', 'build']
+- name: 'node'
+  entrypoint: 'npm'
+  args: ['run', 'create-env']
   env:
     - 'VITE_SEND_MAIL_URL=${_VITE_SEND_MAIL_URL}'
     - 'VITE_TOKEN_CLOUD_FUNCTION=${_VITE_TOKEN_CLOUD_FUNCTION}'
