@@ -48,7 +48,7 @@ function sendMail() {
   axios
     .post(url, payload, { headers })
     .then((res: any) => {
-      if (res.result) {
+      if (res?.data?.result) {
         isSend.value = true;
       } else {
         console.log(res);

@@ -33,6 +33,12 @@ jobs:
             git fetch --all
             git reset --hard origin/master
 
+            cat > /srv/secret-envs/portfolio.env <<EOF
+            VITE_SEND_MAIL_URL=${{ secrets.VITE_SEND_MAIL_URL }}
+            VITE_TOKEN_CLOUD_FUNCTION=${{ secrets.VITE_TOKEN_CLOUD_FUNCTION }}
+            EOF
+            export $(cat /srv/secret-envs/portfolio.env | xargs)
+
             echo "🚀 Levantando contenedores…"
             docker compose up -d --build --force-recreate --remove-orphans
             docker compose logs --tail=50 webapp
