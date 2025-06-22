@@ -21,7 +21,17 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -e
-            cd /srv/mollitiam-web
+            REPO_DIR=/srv/mollitiam-web
+            REPO_URL=git@github.com:lextomato/portfolio.git   # ← ajusta
+
+            if [ ! -d "$REPO_DIR/.git" ]; then
+              echo "🔰 Primera vez: clonando repo…"
+              git clone "$REPO_URL" "$REPO_DIR"
+            fi
+
+            cd "$REPO_DIR"
             git fetch --all
             git reset --hard origin/main
+
+            echo "🚀 Levantando contenedores…"
             docker compose up -d --build --force-recreate --remove-orphans
