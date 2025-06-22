@@ -351,9 +351,7 @@ const message = ref(null);
         >
           <GlitchImg
             :src="
-              store.isFrontend
-                ? '/logos/github.svg'
-                : '@/assets/logos/github_white.svg'
+              store.isFrontend ? '/logos/github.svg' : '/logos/github_white.svg'
             "
             set-class="imgWrap-35"
             size="35"
