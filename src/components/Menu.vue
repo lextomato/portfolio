@@ -277,7 +277,7 @@ const message = ref(null);
                 <span
                   :class="store.isFrontend ? 'bg-white text-muted' : ''"
                   class="border border-3 p-1 px-2 rounded-3"
-                  >hi@mollitiam.cl</span
+                  >admin@mollitiam.cl</span
                 >
               </div>
               <div>
