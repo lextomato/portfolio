@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VITE_SEND_MAIL_URL: ${VITE_SEND_MAIL_URL}
+        VITE_TOKEN_CLOUD_FUNCTION: ${VITE_TOKEN_CLOUD_FUNCTION}
     image: mollitiam-web:latest
     restart: unless-stopped
     env_file: /srv/secret-envs/portfolio.env

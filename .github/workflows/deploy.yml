@@ -35,3 +35,4 @@ jobs:
 
             echo "🚀 Levantando contenedores…"
             docker compose up -d --build --force-recreate --remove-orphans
+            docker compose logs -f webapp
