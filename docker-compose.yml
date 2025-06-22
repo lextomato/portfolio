@@ -10,18 +10,24 @@ services:
     labels:
       traefik.enable: "true"
 
-      ### Router HTTPS
-      traefik.http.routers.molli.rule: Host(`mollitiam.cl`) || Host(`www.mollitiam.cl`)
+      traefik.http.routers.molli.rule: Host(`mollitiam.cl`)
       traefik.http.routers.molli.entrypoints: websecure
       traefik.http.routers.molli.tls.certresolver: le
       traefik.http.services.molli.loadbalancer.server.port: "80"
 
-      ### Router HTTP → redirige a HTTPS
-      traefik.http.routers.molli-http.rule: Host(`mollitiam.cl`) || Host(`www.mollitiam.cl`)
+      traefik.http.routers.molli2.rule: Host(`www.mollitiam.cl`)
+      traefik.http.routers.molli2.entrypoints: websecure
+      traefik.http.routers.molli2.tls.certresolver: le
+      traefik.http.routers.molli2.service: molli
+
+      traefik.http.routers.molli-http.rule: Host(`mollitiam.cl`)
       traefik.http.routers.molli-http.entrypoints: web
       traefik.http.routers.molli-http.middlewares: molli-redirect
 
-      ### Middleware
+      traefik.http.routers.molli2-http.rule: Host(`www.mollitiam.cl`)
+      traefik.http.routers.molli2-http.entrypoints: web
+      traefik.http.routers.molli2-http.middlewares: molli-redirect
+
       traefik.http.middlewares.molli-redirect.redirectscheme.scheme: https
 
 networks:
