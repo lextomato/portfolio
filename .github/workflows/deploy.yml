@@ -33,15 +33,11 @@ jobs:
             git fetch --all
             git reset --hard origin/master
 
-            # ─── 1) (Re)generar el archivo seguro ────────────────────────────────────────
-            cat > /srv/secret-envs/portfolio.env <<EOF
-            VITE_SEND_MAIL_URL=${{ secrets.VITE_SEND_MAIL_URL }}
-            VITE_TOKEN_CLOUD_FUNCTION=${{ secrets.VITE_TOKEN_CLOUD_FUNCTION }}
+            cat > "$REPO_DIR/.env" <<EOF
+            VITE_SEND_MAIL_URL=${VITE_SEND_MAIL_URL}
+            VITE_TOKEN_CLOUD_FUNCTION=${VITE_TOKEN_CLOUD_FUNCTION}
             EOF
-            chmod 600 /srv/secret-envs/portfolio.env        # sólo lectura para deploy
-
-            # ─── 2) Copiar (o enlazar) al repo como .env ─────────────────────────────────
-            ln -sfT /srv/secret-envs/portfolio.env "$REPO_DIR/.env"
+            chmod 600 "$REPO_DIR/.env"        # lectura sólo para deploy
 
             echo "🚀 Levantando contenedores…"
             docker compose up -d --build --force-recreate --remove-orphans
