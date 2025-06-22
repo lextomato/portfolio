@@ -1,6 +1,8 @@
 services:
   webapp:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: mollitiam-web:latest
     container_name: mollitiam-web
     restart: unless-stopped
