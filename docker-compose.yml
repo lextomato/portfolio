@@ -4,7 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
     image: mollitiam-web:latest
-    container_name: mollitiam-web
     restart: unless-stopped
     env_file: /srv/secret-envs/portfolio.env
     networks:
@@ -39,6 +38,9 @@ services:
 
       ### Servicio compartido
       traefik.http.services.molli.loadbalancer.server.port: "80"
+
+      # etiqueta-dummy para forzar recarga
+      traefik.deploy.version: "${GITHUB_SHA:-local}"
 
 networks:
   web:
