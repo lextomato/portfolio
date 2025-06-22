@@ -41,7 +41,7 @@ jobs:
             chmod 600 /srv/secret-envs/portfolio.env        # sólo lectura para deploy
 
             # ─── 2) Copiar (o enlazar) al repo como .env ─────────────────────────────────
-            cp -f /srv/secret-envs/portfolio.env  "$REPO_DIR/.env"      # copia
+            ln -sfT /srv/secret-envs/portfolio.env "$REPO_DIR/.env"
 
             echo "🚀 Levantando contenedores…"
             docker compose up -d --build --force-recreate --remove-orphans
