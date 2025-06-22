@@ -9,23 +9,45 @@ services:
     networks:
       - web
     labels:
-      - traefik.enable=true
+      traefik.enable: "true"
 
-      # Router HTTPS
-      - traefik.http.routers.molli.rule=Host(`mollitiam.cl`) || Host(`www.mollitiam.cl`)
-      - traefik.http.routers.molli.entrypoints=websecure
-      - traefik.http.routers.molli.tls.certresolver=le
-      - traefik.http.services.molli.loadbalancer.server.port=80
+      # ─────────────── Routers HTTPS ───────────────
+      traefik.http.routers.molli.rule: Host(`mollitiam.cl`)
+      traefik.http.routers.molli.entrypoints: websecure
+      traefik.http.routers.molli.tls.certresolver: le
+      traefik.http.routers.molli.service: molli
+      traefik.http.routers.molli.middlewares: spa@docker # ⬅️  añadimos el SPA
 
-      # Router HTTP  → redirección automática a https
-      - traefik.http.routers.molli.entrypoints=web
-      - traefik.http.routers.molli.middlewares=https-redirect@file
+      traefik.http.routers.molli2.rule: Host(`www.mollitiam.cl`)
+      traefik.http.routers.molli2.entrypoints: websecure
+      traefik.http.routers.molli2.tls.certresolver: le
+      traefik.http.routers.molli2.service: molli
+      traefik.http.routers.molli2.middlewares: spa@docker # ⬅️  idem www
 
-      # Middleware SPA (devuelve index.html en 404)
-      - traefik.http.middlewares.spa.errors.status=404
-      - traefik.http.middlewares.spa.errors.service=molli@docker
-      - traefik.http.middlewares.spa.errors.query=/index.html
-      - traefik.http.routers.molli.middlewares=spa@docker
+      # ─────────────── Routers HTTP (301 a HTTPS) ───────────────
+      traefik.http.routers.molli-http.rule: Host(`mollitiam.cl`)
+      traefik.http.routers.molli-http.entrypoints: web
+      traefik.http.routers.molli-http.middlewares: molli-redirect
+
+      traefik.http.routers.molli2-http.rule: Host(`www.mollitiam.cl`)
+      traefik.http.routers.molli2-http.entrypoints: web
+      traefik.http.routers.molli2-http.middlewares: molli-redirect
+
+      # ─────────────── Middlewares ───────────────
+      ## redirección 80 → 443
+      traefik.http.middlewares.molli-redirect.redirectscheme.scheme: https
+      traefik.http.middlewares.molli-redirect.redirectscheme.permanent: "true"
+
+      ## SPA fallback: cuando el backend responde 404 → /index.html
+      traefik.http.middlewares.spa.errors.status: 404
+      traefik.http.middlewares.spa.errors.service: molli@docker
+      traefik.http.middlewares.spa.errors.query: /index.html
+
+      # ─────────────── Servicio ───────────────
+      traefik.http.services.molli.loadbalancer.server.port: "80"
+
+      # etiqueta-dummy para que Compose re-cree la imagen en cada push
+      traefik.deploy.version: "${GITHUB_SHA:-local}"
 
 networks:
   web:
