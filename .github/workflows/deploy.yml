@@ -17,8 +17,7 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: npm install -g @quasar/cli
-      - run: npx quasar build -m spa
+      - run: npm build
 
       - name: Copy & deploy vía SSH
         uses: appleboy/ssh-action@v1.0.0
