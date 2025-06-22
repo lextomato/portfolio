@@ -1,21 +1,13 @@
-# build stage
-FROM node:lts-alpine as build-stage
-WORKDIR /app
+FROM node:22-alpine AS builder
 
+WORKDIR /src
 COPY package*.json ./
-RUN npm install
-
+RUN npm ci --silent
 COPY . .
-RUN npm run build
+RUN npx quasar build -m spa
 
-RUN mkdir -p /app/dist/assets/logos
-RUN cp -R /app/src/assets/logos/* /app/dist/assets/logos/
+FROM nginx:1.25-alpine
+COPY --from=builder /src/dist/spa /usr/share/nginx/html
 
-# production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-
-COPY --from=build-stage /app/deployment/default.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+# Nginx ya expone 80 por defecto
+HEALTHCHECK CMD wget -qO- http://localhost || exit 1

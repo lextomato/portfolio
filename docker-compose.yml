@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  webapp:
+    build: .
+    image: mollitiam-web:latest
+    container_name: mollitiam-web
+    restart: unless-stopped
+    env_file: /srv/secret-envs/portfolio.env
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+
+      # Dominio principal
+      - traefik.http.routers.molli.rule=Host(`mollitiam.cl`,`www.mollitiam.cl`)
+
+      # Solo por HTTPS
+      - traefik.http.routers.molli.entrypoints=websecure
+      - traefik.http.routers.molli.tls.certresolver=le
+
+      # Puerto interno donde Nginx sirve la SPA
+      - traefik.http.services.molli.loadbalancer.server.port=80
+      - traefik.http.middlewares.www2root.redirectregex.regex=^https://www\.(.*)
+      - traefik.http.middlewares.www2root.redirectregex.replacement=https://$1
+      - traefik.http.routers.molli.middlewares=www2root
+
+networks:
+  web:
+    external: true
+    name: traefik_default
