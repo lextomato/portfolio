@@ -4,10 +4,8 @@ WORKDIR /src
 COPY package*.json ./
 RUN npm ci --silent
 COPY . .
-RUN npx quasar build -m spa
+RUN npm run build
 
 FROM nginx:1.25-alpine
-COPY --from=builder /src/dist/spa /usr/share/nginx/html
-
-# Nginx ya expone 80 por defecto
+COPY --from=builder /src/dist /usr/share/nginx/html
 HEALTHCHECK CMD wget -qO- http://localhost || exit 1
