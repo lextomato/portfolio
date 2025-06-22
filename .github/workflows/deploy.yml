@@ -31,7 +31,7 @@ jobs:
 
             cd "$REPO_DIR"
             git fetch --all
-            git reset --hard origin/main
+            git reset --hard origin/master
 
             echo "🚀 Levantando contenedores…"
             docker compose up -d --build --force-recreate --remove-orphans
