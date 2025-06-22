@@ -8,5 +8,5 @@ RUN npm run build
 
 FROM nginx:1.25-alpine
 COPY --from=builder /src/dist /usr/share/nginx/html
-COPY default.conf /etc/nginx/conf.d/default.conf
+# COPY default.conf /etc/nginx/conf.d/default.conf
 HEALTHCHECK CMD wget -qO- http://localhost || exit 1

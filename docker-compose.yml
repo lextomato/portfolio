@@ -9,38 +9,23 @@ services:
     networks:
       - web
     labels:
-      traefik.enable: "true"
+      - traefik.enable=true
 
-      ### Router HTTPS para mollitiam.cl
-      traefik.http.routers.molli.rule: Host(`mollitiam.cl`)
-      traefik.http.routers.molli.entrypoints: websecure
-      traefik.http.routers.molli.tls.certresolver: le
-      traefik.http.routers.molli.service: molli
+      # Router HTTPS
+      - traefik.http.routers.molli.rule=Host(`mollitiam.cl`) || Host(`www.mollitiam.cl`)
+      - traefik.http.routers.molli.entrypoints=websecure
+      - traefik.http.routers.molli.tls.certresolver=le
+      - traefik.http.services.molli.loadbalancer.server.port=80
 
-      ### Router HTTPS para www.mollitiam.cl
-      traefik.http.routers.molli2.rule: Host(`www.mollitiam.cl`)
-      traefik.http.routers.molli2.entrypoints: websecure
-      traefik.http.routers.molli2.tls.certresolver: le
-      traefik.http.routers.molli2.service: molli
+      # Router HTTP  → redirección automática a https
+      - traefik.http.routers.molli.entrypoints=web
+      - traefik.http.routers.molli.middlewares=https-redirect@file
 
-      ### Router HTTP (redirige a HTTPS) mollitiam.cl
-      traefik.http.routers.molli-http.rule: Host(`mollitiam.cl`)
-      traefik.http.routers.molli-http.entrypoints: web
-      traefik.http.routers.molli-http.middlewares: molli-redirect
-
-      ### Router HTTP (redirige a HTTPS) www.mollitiam.cl
-      traefik.http.routers.molli2-http.rule: Host(`www.mollitiam.cl`)
-      traefik.http.routers.molli2-http.entrypoints: web
-      traefik.http.routers.molli2-http.middlewares: molli-redirect
-
-      ### Middleware de redirección
-      traefik.http.middlewares.molli-redirect.redirectscheme.scheme: https
-
-      ### Servicio compartido
-      traefik.http.services.molli.loadbalancer.server.port: "80"
-
-      # etiqueta-dummy para forzar recarga
-      traefik.deploy.version: "${GITHUB_SHA:-local}"
+      # Middleware SPA (devuelve index.html en 404)
+      - traefik.http.middlewares.spa.errors.status=404
+      - traefik.http.middlewares.spa.errors.service=molli@docker
+      - traefik.http.middlewares.spa.errors.query=/index.html
+      - traefik.http.routers.molli.middlewares=spa@docker
 
 networks:
   web:
